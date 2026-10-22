@@ -258,6 +258,26 @@ function deleteCandidate(candidateId) {
 
     setShowJobForm(false)
   }
+  // NEW: Interview statistics
+const interviewCandidates = candidates.filter(
+  (candidate) => candidate.interviewDate
+)
+
+const scheduledInterviewCount = interviewCandidates.filter(
+  (candidate) =>
+    (candidate.interviewStatus || 'Scheduled') === 'Scheduled'
+).length
+
+const completedInterviewCount = interviewCandidates.filter(
+  (candidate) => candidate.interviewStatus === 'Completed'
+).length
+
+const cancelledInterviewCount = interviewCandidates.filter(
+  (candidate) => candidate.interviewStatus === 'Cancelled'
+).length
+
+const totalInterviewCount = interviewCandidates.length
+
   return (
     <div className="app">
       <aside className="sidebar">
@@ -439,18 +459,46 @@ function deleteCandidate(candidateId) {
 </article>
           <article className="stat-card">
             <p>Total Candidates</p>
-            <h2>248</h2>
+<h2>{candidates.length}</h2>
             <span className="stat-note">Across all job openings</span>
           </article>
           <article className="stat-card">
             <p>Interviews</p>
-            <h2>18</h2>
-            <span className="stat-note">Scheduled this week</span>
+<h2>{scheduledInterviewCount}</h2>            <span className="stat-note">Scheduled this week</span>
           </article>
+
+
+<article className="stat-card">
+  <p>Offers Sent</p>
+  <h2>{candidates.filter((candidate) => candidate.status === 'Offer Sent').length}</h2>
+  <span className="stat-note">Candidates with offers sent</span>
+</article>
+
+        </section>
+
+        <section className="stats-grid">
           <article className="stat-card">
-            <p>Offers Sent</p>
-            <h2>7</h2>
-            <span className="stat-note">Awaiting responses</span>
+            <p>Scheduled Interviews</p>
+            <h2>{scheduledInterviewCount}</h2>
+            <span className="stat-note">Awaiting completion</span>
+          </article>
+
+          <article className="stat-card">
+            <p>Completed Interviews</p>
+            <h2>{completedInterviewCount}</h2>
+            <span className="stat-note">Successfully completed</span>
+          </article>
+
+          <article className="stat-card">
+            <p>Cancelled Interviews</p>
+            <h2>{cancelledInterviewCount}</h2>
+            <span className="stat-note">Cancelled interviews</span>
+          </article>
+
+          <article className="stat-card">
+            <p>Total Interviews</p>
+            <h2>{totalInterviewCount}</h2>
+            <span className="stat-note">All recorded interviews</span>
           </article>
         </section>
 
@@ -755,6 +803,7 @@ setEditingCandidateId(null)
             <option value="Shortlisted">Shortlisted</option>
             <option value="Interview">Interview</option>
             <option value="Rejected">Rejected</option>
+            <option value="Offer Sent">Offer Sent</option>
           </select>
         </label>
 
@@ -829,6 +878,7 @@ onClick={() => {
       <option value="Shortlisted">Shortlisted</option>
       <option value="Interview">Interview</option>
       <option value="Rejected">Rejected</option>
+      <option value="Offer Sent">Offer Sent</option>
     </select>
   </div>
 </div>
@@ -893,6 +943,7 @@ onClick={() => {
   <option value="Shortlisted">Shortlisted</option>
   <option value="Interview">Interview</option>
   <option value="Rejected">Rejected</option>
+  <option value="Offer Sent">Offer Sent</option>
 </select>
 
         </div>
